@@ -1,6 +1,7 @@
 
 import requests
 import json
+from bs4 import BeautifulSoup
 
 api_base_url = "http://sandbox.holidayiq.com/"
 destination_url = "http://sandbox.holidayiq.com/destinations/"
@@ -37,6 +38,12 @@ while True:
     except:    
         break
 
+f = open('workfile', 'wb')
 for id in destination_ids:
-   content =  get_api_content(destination_url+id)
-   print content
+   content =  get_api_content(destination_url+str(id))
+   f.write(str(id)+",")
+   description = BeautifulSoup(content['shortDescription']).get_text()
+   print description    
+   f.write(description.encode('utf-8'))
+   f.write("\n")
+f.close()
