@@ -3,6 +3,7 @@ import requests
 import json
 
 api_base_url = "http://sandbox.holidayiq.com/"
+destination_url = "http://sandbox.holidayiq.com/destinations/"
 username = "thack"
 password = "thack@hiq"
 auth_header = 'Basic %s' % (":".join([username,password]).encode('Base64').strip('\r\n'))
@@ -15,15 +16,27 @@ def get_api_content(url):
 
 def get_nextpage_url(content):
     return str(content['_links']['next']['href'])
+   
+def get_destination_ids(content):
+    dest_list = []
+    for dest in content['_embedded']['destinations']:
+        dest_list.append(dest['id'])
+    return dest_list
     
+
+destination_ids = []
 content = get_api_content(api_base_url+"destinations")
+destination_ids.extend(get_destination_ids(content))
 next_page_url = str(content['_links']['next']['href'])
 
 while True:
     content = get_api_content(next_page_url) 
-    next_page_url = str(content['_links']['next']['href'])
-    print next_page_url
-
-    if next_page_url == None:
+    destination_ids.extend(get_destination_ids(content))
+    try:
+        next_page_url = str(content['_links']['next']['href'])
+    except:    
         break
 
+for id in destination_ids:
+   content =  get_api_content(destination_url+id)
+   print content
