@@ -38,7 +38,7 @@ while True:
     except:    
         break
 
-f = open('workfile', 'wb')
+f = open('desc.csv', 'wb')
 for id in destination_ids:
    content =  get_api_content(destination_url+str(id))
    f.write(str(id)+",")
