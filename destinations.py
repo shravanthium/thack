@@ -3,7 +3,10 @@ import requests
 import json
 
 api_base_url = "http://sandbox.holidayiq.com/"
-headers = {'Content-type':'application/json', 'Accept':'application/json', 'Authorizaion':'Basic dGhhY2s6dGhhY2tAaGlx'}
+username = "thack"
+password = "thack@hiq"
+auth_header = 'Basic %s' % (":".join([username,password]).encode('Base64').strip('\r\n'))
+headers = {'content-type' : 'application/json', 'Authorization' : auth_header}
 
 def get_api_content(url):
     response = requests.get(url, headers=headers)
